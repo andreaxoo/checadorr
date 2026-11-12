@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -11,10 +12,11 @@ class Sucursal(models.Model):
         return self.nombre
 
 class Empleado(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name='empleado')
     nombre = models.CharField(max_length=100)
     rfc = models.CharField(max_length=13, unique=True, help_text="RFC del SAT")
     curp = models.CharField(max_length=18, unique=True)
-    sucursal = models.ForeignKey(Sucursal, on_delete=models.SET_NULL, null=True)
+    sucursal = models.ForeignKey(Sucursal, on_delete=models.SET_NULL, null=True, blank=True)
     activo = models.BooleanField(default=True)
 
     def __str__(self):
